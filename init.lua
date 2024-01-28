@@ -230,19 +230,7 @@ require('lazy').setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    opts = {
-      workspaces = {
-        {
-          name = "personal",
-          path = "~/notes",
-        },
-      },
-      log_level = vim.log.levels.DEBUG,
-      daily_notes = {
-        -- Optional, if you keep daily notes in a separate directory.
-        folder = "20-29 areas/dairy/2024/",
-      },
-    },
+    
   }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -329,7 +317,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 
 
-require('obsidian').setup{}
+require('obsidian').setup {
+  workspaces = {
+    {
+      name = "personal",
+      path = "~/notes",
+    },
+  },
+  daily_notes = {
+    folder = "20-29 areas/dairy/2024/",
+  },
+}
 
 
 -- [[ Configure Telescope ]]
