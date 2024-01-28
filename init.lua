@@ -230,7 +230,28 @@ require('lazy').setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    
+  },
+  {
+    "elentok/format-on-save.nvim",
+  },
+  {
+    'sbdchd/neoformat',
+  },
+  {
+  "tadmccorkle/markdown.nvim",
+  ft = "markdown", -- or 'event = "VeryLazy"'
+  opts = {
+on_attach = function(bufnr)
+  local function toggle(key)
+    return "<Esc>gv<Cmd>lua require'markdown.inline'"
+      .. ".toggle_emphasis_visual'" .. key .. "'<CR>"
+  end
+
+  vim.keymap.set("x", "<C-b> <C-b>", toggle("b"), { buffer = bufnr })
+  vim.keymap.set("x", "<C-i>", toggle("i"), { buffer = bufnr })
+end,
+    -- configuration here or empty for defaults
+  },
   }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -316,6 +337,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 
+local formatters = require("format-on-save.formatters")
+local format_on_save = require("format-on-save")
+require('format-on-save').setup({
+  format_on_save.setup({
+    formatter_by_ft = {
+      markdown = formatters.prettierd,
+  }
+  })
+})
+
+-- require('neoformat').setup{}
 
 require('obsidian').setup {
   workspaces = {
@@ -374,7 +406,7 @@ end
 local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
-    require('telescope.builtin').live_grep {
+    require('elescope.builtin').live_grep {
       search_dirs = { git_root },
     }
   end
@@ -416,7 +448,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'markdown' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'markdown', 'markdown_inline'},
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -559,7 +591,8 @@ local servers = {
   -- clangd = {},
   -- gopls = {},
   -- pyright = {},
-  -- rust_analyzer = {},
+  rust_analyzer = {},
+  marksman = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
