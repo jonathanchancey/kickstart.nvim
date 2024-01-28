@@ -228,7 +228,6 @@ require('lazy').setup({
     lazy = true,
     ft = "markdown",
     dependencies = {
-      -- Required.
       "nvim-lua/plenary.nvim",
     },
     opts = {
@@ -237,6 +236,11 @@ require('lazy').setup({
           name = "personal",
           path = "~/notes",
         },
+      },
+      log_level = vim.log.levels.DEBUG,
+      daily_notes = {
+        -- Optional, if you keep daily notes in a separate directory.
+        folder = "20-29 areas/dairy/2024/",
       },
     },
   }
@@ -325,9 +329,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 
 
-require('obsidian').setup{
-
-}
+require('obsidian').setup{}
 
 
 -- [[ Configure Telescope ]]
